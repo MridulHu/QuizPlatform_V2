@@ -6,7 +6,7 @@ import { FacebookShareButton, TwitterShareButton } from 'react-share';
 import { FaFacebook } from 'react-icons/fa';
 
 const AttemptQuizPage = () => {
-  const { quizId } = useParams(); // Retrieve quizId from URL parameters
+  const { quizId } = useParams(); 
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState([]);
@@ -18,10 +18,10 @@ const AttemptQuizPage = () => {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const userId = 'currentUserId'; // Replace with the actual user ID
-        console.log('Fetching quizzes for userId:', userId); // Log userId
+        const userId = 'currentUserId'; 
+        console.log('Fetching quizzes for userId:', userId); 
         const quizzes = await loadQuizzesFromFirestore(userId);
-        console.log('Loaded quizzes:', quizzes); // Log fetched quizzes
+        console.log('Loaded quizzes:', quizzes); 
         console.log('Quizzes length:', quizzes.length);
 
         if (!quizId) {
@@ -30,10 +30,9 @@ const AttemptQuizPage = () => {
           return;
         }
 
-        // Find quiz by quizId
         const selectedQuiz = quizzes.find(quiz => quiz.id === quizId);
-        console.log('Retrieved quizId:', quizId); // Log retrieved quizId
-        console.log('Selected quiz:', selectedQuiz); // Log selected quiz
+        console.log('Retrieved quizId:', quizId); 
+        console.log('Selected quiz:', selectedQuiz); 
 
         if (!selectedQuiz) {
           setError('Quiz not found');
@@ -44,7 +43,7 @@ const AttemptQuizPage = () => {
         setQuiz(selectedQuiz);
         setError(null);
       } catch (err) {
-        console.error('Error loading quizzes:', err); // Log error details
+        console.error('Error loading quizzes:', err); 
         setError('Error loading quizzes');
         navigate('/quizzes');
       }
@@ -62,7 +61,7 @@ const AttemptQuizPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!quiz || !quiz.questions) return; // Guard clause to prevent errors
+    if (!quiz || !quiz.questions) return; 
 
     const feedbackArray = quiz.questions.map((question, index) => ({
       questionIndex: index,

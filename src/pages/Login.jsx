@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '../firebase-config';
@@ -15,7 +14,7 @@ const LoginPage = ({ setIsAuthenticated }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setIsAuthenticated(true);
-      navigate('/');  // Redirect to homepage
+      navigate('/');  
     } catch (error) {
       setError('Invalid email or password');
     }
@@ -25,8 +24,8 @@ const LoginPage = ({ setIsAuthenticated }) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      setIsRegistering(false); // Switch back to login view
-      setError(''); // Clear error message
+      setIsRegistering(false); 
+      setError(''); 
     } catch (error) {
       setError('Error creating account');
     }

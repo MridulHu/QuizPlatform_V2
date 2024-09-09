@@ -11,7 +11,7 @@ const QuizListPage = () => {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const userId = 'currentUserId'; // Replace with the actual user ID
+        const userId = 'currentUserId'; 
         const loadedQuizzes = await loadQuizzesFromFirestore(userId);
         setQuizzes(loadedQuizzes);
       } catch (err) {

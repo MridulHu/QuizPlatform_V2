@@ -4,7 +4,7 @@ import { saveQuizzesToFirestore, loadQuizzesFromFirestore, deleteQuizFromFiresto
 
 const CreateQuizPage = () => {
   const [quizzes, setQuizzes] = useState([]);
-  const userId = 'currentUserId'; // Replace with the actual user ID
+  const userId = 'currentUserId'; 
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -20,12 +20,11 @@ const CreateQuizPage = () => {
   }, [userId]);
 
   const handleCreateQuiz = async (quizData) => {
-    const newQuizId = `quiz_${Date.now()}`; // Generate a unique ID for the new quiz
+    const newQuizId = `quiz_${Date.now()}`; 
     const updatedQuizzes = [...quizzes, { id: newQuizId, ...quizData }];
     setQuizzes(updatedQuizzes);
 
     try {
-      // Ensure userId and newQuizId are valid
       if (typeof userId !== 'string' || typeof newQuizId !== 'string') {
         throw new Error('Invalid userId or quizId');
       }
@@ -41,12 +40,11 @@ const CreateQuizPage = () => {
     setQuizzes(updatedQuizzes);
 
     try {
-      // Ensure userId and quizId are valid
       if (typeof userId !== 'string' || typeof quizId !== 'string') {
         throw new Error('Invalid userId or quizId');
       }
 
-      await deleteQuizFromFirestore(userId, quizId); // Call a separate function to delete the quiz
+      await deleteQuizFromFirestore(userId, quizId); 
     } catch (error) {
       console.error('Failed to delete quiz:', error);
     }
