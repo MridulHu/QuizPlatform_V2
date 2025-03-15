@@ -1,4 +1,4 @@
-# QuizPlatform
+# QuizPlatform V2
 
   **This Website provides user authentication and database store features using Firebase**
 
@@ -12,4 +12,8 @@
 
   **The score can be shared on social media using the share button; the posting text is also readymade.**
 
-  **Deployed link: https://quiz-platform-firebase.vercel.app/**
+  **Added Black theme and Keyframes for smooth animation**
+
+  **Auth Screen & About Page Update **
+
+  **Deployed link: https://quiz-platform-v2.vercel.app/**
