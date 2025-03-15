@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '../firebase-config';
+import './Login.css'; // New CSS file for styling
 
 const LoginPage = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -32,93 +33,21 @@ const LoginPage = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div style={loginStyles.container}>
-      {isRegistering ? (
-        <form onSubmit={handleRegister}>
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={loginStyles.input}
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={loginStyles.input}
-            />
-          </div>
-          <div className="login-button-container">
-            <button type="submit" className="login-button">Create Account</button>
-          </div>
-          <p onClick={() => setIsRegistering(false)} style={loginStyles.toggleLink}>
-            Already have an account? Login
-          </p>
+    <div className="login-container">
+      <div className="login-card">
+        <h2>{isRegistering ? "Create Account" : "Login"}</h2>
+        <form onSubmit={isRegistering ? handleRegister : handleLogin}>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit" className="login-button">{isRegistering ? "Sign Up" : "Login"}</button>
         </form>
-      ) : (
-        <form onSubmit={handleLogin}>
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={loginStyles.input}
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={loginStyles.input}
-            />
-          </div>
-          <div className="login-button-container">
-            <button type="submit" className="login-button">Login</button>
-          </div>
-          <p onClick={() => setIsRegistering(true)} style={loginStyles.toggleLink}>
-            Don't have an account? Create one
-          </p>
-        </form>
-      )}
-      {error && <p style={loginStyles.error}>{error}</p>}
+        <p className="toggle-link" onClick={() => setIsRegistering(!isRegistering)}>
+          {isRegistering ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+        </p>
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
   );
-};
-
-const loginStyles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-  },
-  input: {
-    width: '300px',
-    padding: '12px',
-    margin: '10px 0',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  error: {
-    color: 'red',
-  },
-  toggleLink: {
-    color: 'white',
-    cursor: 'pointer',
-    marginTop: '10px',
-    textAlign: 'center',
-    fontSize: '16px',
-  },
 };
 
 export default LoginPage;

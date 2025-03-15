@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QuizForm from '../components/QuizForm';
 import { saveQuizzesToFirestore, loadQuizzesFromFirestore, deleteQuizFromFirestore } from '../features/storageUtils';
+import './CreateQuizPage.css';  // ✅ Import the CSS file
 
 const CreateQuizPage = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -51,7 +52,7 @@ const CreateQuizPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Create a New Quiz</h1>
       <QuizForm onCreate={handleCreateQuiz} />
 

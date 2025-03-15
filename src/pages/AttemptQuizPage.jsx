@@ -6,7 +6,7 @@ import { FacebookShareButton, TwitterShareButton } from 'react-share';
 import { FaFacebook } from 'react-icons/fa';
 
 const AttemptQuizPage = () => {
-  const { quizId } = useParams(); 
+  const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState([]);
@@ -18,11 +18,8 @@ const AttemptQuizPage = () => {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const userId = 'currentUserId'; 
-        console.log('Fetching quizzes for userId:', userId); 
+        const userId = 'currentUserId';
         const quizzes = await loadQuizzesFromFirestore(userId);
-        console.log('Loaded quizzes:', quizzes); 
-        console.log('Quizzes length:', quizzes.length);
 
         if (!quizId) {
           setError('No quiz ID provided');
@@ -31,9 +28,6 @@ const AttemptQuizPage = () => {
         }
 
         const selectedQuiz = quizzes.find(quiz => quiz.id === quizId);
-        console.log('Retrieved quizId:', quizId); 
-        console.log('Selected quiz:', selectedQuiz); 
-
         if (!selectedQuiz) {
           setError('Quiz not found');
           navigate('/quizzes');
@@ -43,7 +37,7 @@ const AttemptQuizPage = () => {
         setQuiz(selectedQuiz);
         setError(null);
       } catch (err) {
-        console.error('Error loading quizzes:', err); 
+        console.error('Error loading quizzes:', err);
         setError('Error loading quizzes');
         navigate('/quizzes');
       }
@@ -61,56 +55,54 @@ const AttemptQuizPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!quiz || !quiz.questions) return; 
+    if (!quiz || !quiz.questions) return;
 
     const feedbackArray = quiz.questions.map((question, index) => ({
       questionIndex: index,
       selectedOption: answers[index],
-      isCorrect: question.correctOption === question.options.indexOf(answers[index]),
+      isCorrect: question.options[question.correctOption] === answers[index],
     }));
 
     setFeedback(feedbackArray);
-    const totalCorrect = feedbackArray.filter((item) => item.isCorrect).length;
-    setScore(totalCorrect);
+    setScore(feedbackArray.filter((item) => item.isCorrect).length);
     setShowShareOptions(true);
   };
 
-  const shareMessage = `I scored ${score} out of ${quiz?.questions?.length || 0} on "${quiz?.title}" quiz! Try it out, It is developed by Mridul Das`;
+  const shareMessage = `I scored ${score} out of ${quiz?.questions?.length || 0} on "${quiz?.title}" quiz! Try it out.`;
 
   if (error) {
-    return <div className="container">{error}</div>;
+    return <div className="quiz-container">{error}</div>;
   }
 
   if (!quiz) {
-    return <div className="container">Loading quiz...</div>;
+    return <div className="quiz-container">Loading quiz...</div>;
   }
 
   return (
-    <div className="container">
+    <div className="quiz-container">
       <div className="quiz-content">
         <h1>Attempt Quiz: {quiz.title}</h1>
         <form onSubmit={handleSubmit}>
           {quiz.questions && quiz.questions.length > 0 ? (
             quiz.questions.map((question, index) => (
-              <div key={index} className="question-container">
+              <div key={index} className="question-card">
                 <h2>Question {index + 1}</h2>
                 <p>{question.question}</p>
                 {question.options.map((option, optionIndex) => (
-                  <div key={optionIndex} className="option-container">
+                  <label key={optionIndex} className="option">
                     <input
                       type="radio"
-                      id={`question-${index}-option-${optionIndex}`}
                       name={`question-${index}`}
                       value={option}
                       checked={answers[index] === option}
                       onChange={() => handleAnswerChange(index, option)}
                     />
-                    <label htmlFor={`question-${index}-option-${optionIndex}`}>{option}</label>
-                  </div>
+                    {option}
+                  </label>
                 ))}
                 {feedback.length > 0 && (
                   <p className={`feedback ${feedback[index]?.isCorrect ? 'correct' : 'incorrect'}`}>
-                    {feedback[index]?.isCorrect ? 'Correct!' : 'Incorrect.'}
+                    {feedback[index]?.isCorrect ? '✅ Correct!' : '❌ Incorrect'}
                   </p>
                 )}
               </div>
@@ -118,14 +110,14 @@ const AttemptQuizPage = () => {
           ) : (
             <p>No questions available.</p>
           )}
-          <button type="submit">Submit Answers</button>
+          <button type="submit" className="submit-btn">Submit Answers</button>
         </form>
+
         {feedback.length > 0 && (
           <div className="result-summary">
             <p>Total Correct Answers: {feedback.filter(item => item.isCorrect).length} / {quiz.questions.length}</p>
             <p>Your Score: {score}</p>
 
-            {/* Share buttons */}
             {showShareOptions && (
               <div className="share-options">
                 <h3>Share your score!</h3>

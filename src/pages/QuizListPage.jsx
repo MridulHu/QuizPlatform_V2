@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { loadQuizzesFromFirestore } from '../features/storageUtils';
-import '../App.css';
+import './QuizListPage.css';
 
 const QuizListPage = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -11,7 +11,7 @@ const QuizListPage = () => {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const userId = 'currentUserId'; 
+        const userId = 'currentUserId'; // Replace with actual user ID logic
         const loadedQuizzes = await loadQuizzesFromFirestore(userId);
         setQuizzes(loadedQuizzes);
       } catch (err) {
@@ -26,24 +26,26 @@ const QuizListPage = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading quizzes...</p>;
+    return <p className="loading-text">Loading quizzes...</p>;
   }
 
   return (
-    <div>
-      <h1>Select a Quiz to Attempt</h1>
-      {error && <p>{error}</p>}
-      <ul>
-        {quizzes.length > 0 ? (
-          quizzes.map((quiz) => (
-            <li key={quiz.id}>
-              <Link to={`/attempt/${quiz.id}`}>Attempt {quiz.title}</Link>
-            </li>
-          ))
-        ) : (
-          <p>No quizzes available.</p>
-        )}
-      </ul>
+    <div className="quiz-list-container">
+      <h1>Available Quizzes</h1>
+      {error && <p className="error-message">{error}</p>}
+      
+      {quizzes.length > 0 ? (
+        <div className="quiz-grid">
+          {quizzes.map((quiz) => (
+            <Link to={`/attempt/${quiz.id}`} key={quiz.id} className="quiz-card">
+              <h2>{quiz.title}</h2>
+              <p>{quiz.description || "No description available."}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <p className="no-quizzes">No quizzes available.</p>
+      )}
     </div>
   );
 };
