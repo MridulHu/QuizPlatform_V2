@@ -1,5 +1,5 @@
 import React from 'react';
-import quizImage from '../assets/quiz-platform.jpeg';
+import quizImage from '../assets/image.jpg';
 import '../App.css';
 
 const Home = () => {
